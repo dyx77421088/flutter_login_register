@@ -1,8 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:loginregister/my_ui/my_text_form_field.dart';
 import 'package:loginregister/pages/login/login_info.dart';
 import 'package:loginregister/service/http_request.dart';
-//import 'package:dialog/dialogs/alert.dart';
+import 'package:loginregister/utils/toast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   /// 验证完成之后进行登录
   void _onLogin(String userName, String password) {
 //      showDialog(context: context, builder: (ctx)=> new AlertDialog(
@@ -20,16 +19,19 @@ class _LoginPageState extends State<LoginPage> {
 //          FlatButton(child: Text('取消'), onPressed: null),
 //        ],
 //      ));
-    HttpRequest().request("/get",
-        params: {"userName": userName, "password": password}).then((res) {
+    Map<String, dynamic> data = {
+      "user_name": userName,
+      "password": password
+    };
+    HttpRequest().request("user/login", method: "post", data: data, inter: InterceptorsWrapper(
+      onError: (error) {
+        DYXToast(context).showToast(error.response.data['message']);
+      }
+    )).then((res) {
       print('$res');
+      DYXToast(context).showToast("登录成功");
     });
     print('$userName  +++  $password');
-//      alert("123123");
-//
-//      querySelector("#alertButton").onClick.listen((_) {
-//        alert("6666");
-//      });
   }
 
   @override

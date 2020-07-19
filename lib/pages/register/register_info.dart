@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:math';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:loginregister/my_ui/my_text_form_field.dart';
+import 'package:loginregister/service/http_request.dart';
+import 'package:loginregister/utils/toast.dart';
 
-typedef OnRegisterCallback(String userName, String password, String phone);
+typedef OnRegisterCallback(String userName, String password, String phone, String code);
 
 class RegisterInfo extends StatefulWidget {
   final OnRegisterCallback onRegister;
@@ -39,7 +40,7 @@ class _RegisterInfoState extends State<RegisterInfo> {
     //先验证输入是否合法，合法执行后面的
     if (_formKey.currentState.validate()) {
       widget.onRegister(
-          _userController.text, _pwdController.text, _phoneController.text);
+          _userController.text, _pwdController.text, _phoneController.text, _codeController.text);
     }
   }
 
@@ -115,7 +116,7 @@ class _RegisterInfoState extends State<RegisterInfo> {
       leftIcon: Icon(Icons.phone),
       validator: (value) {
         RegExp exp = RegExp(
-            r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+            r'^((13[0-9])|(14[0-9])|(15[0-9])|(166)|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
         bool matched = exp.hasMatch(value);
         if (!matched) return "手机号格式不正确";
         return null;
@@ -130,15 +131,42 @@ class _RegisterInfoState extends State<RegisterInfo> {
       hintText: "请输入验证码",
       leftIcon: Icon(Icons.code),
       suffixIcon: FlatButton(child: Text(countTime <= 0 ? '获得验证码' : "$countTime秒后重试"),
-        onPressed: countTime <= 0 ? startTimer : null,),
+        onPressed: countTime <= 0 ? sendCode : null,),
       controller: _codeController,
-      validator: (value) {
-        if(value != code) {
-          return "验证码不正确";
-        }
-        return null;
-      },
+//      validator: (value) {
+//        if(value != code) {
+//          return "验证码不正确";
+//        }
+//        return null;
+//      },
     );
+  }
+
+  /// 发送验证码
+  void sendCode() {
+    RegExp exp = RegExp(
+        r'^((13[0-9])|(14[0-9])|(15[0-9])|(166)|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+    String phoneNumber = _phoneController.text;
+    bool matched = exp.hasMatch(phoneNumber);
+    if (!matched) {
+      DYXToast(context).showToast("手机号格式错误");
+      return;
+    }
+    print(phoneNumber);
+    Map<String, dynamic> data = {
+      "phone_number": phoneNumber
+    };
+    // 发送手机号获得验证码
+    HttpRequest().request("user/sendCode", method: "post", data: data, inter: InterceptorsWrapper(
+        onError: (response) {
+          print("错误的");
+          print(response.response.statusCode);
+          print(response.response.data);
+        }
+    )).then((res) {
+      print('$res');
+      startTimer();
+    });
   }
 
   var countTime = 0;
@@ -146,9 +174,10 @@ class _RegisterInfoState extends State<RegisterInfo> {
   String code;
   /// 计时器
   void startTimer() {
-    // 随机6位验证码
-    code = Random().nextInt(1000000).toString();
-    print(code);
+//    // 随机6位验证码
+//    code = Random().nextInt(1000000).toString();
+//    print(code);
+
     countTime = 60;
 
     final call = (_) {

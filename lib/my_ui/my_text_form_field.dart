@@ -137,7 +137,11 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
 
   String pwdValidator(String value) {
     if (value == null || value.isEmpty || value.trim().length < 6) {
-      return "${widget.isPassword ? "密码" : "用户名"}需要大于等于6位";
+      if(widget.isPassword) {
+        return "密码需要大于6位";
+      }
+      if(value.trim().length < 2)
+        return "用户名需要大于等于2位";
     }
     return null;
   }

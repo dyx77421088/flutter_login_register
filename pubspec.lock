@@ -95,6 +95,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      url: "http://mirrors.cnnic.cn/dart-pub"
+    source: hosted
+    version: "6.0.1"
   gesture_recognition:
     dependency: "direct main"
     description:
@@ -227,5 +234,5 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-  dart: ">2.4.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.5.0 <2.0.0"

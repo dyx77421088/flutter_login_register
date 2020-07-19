@@ -7,7 +7,7 @@ class HttpRequest {
   final Dio dio = Dio(baseOptions);
 
 
-  Future<T> request<T>(String url, {String method = "get", Map<String, dynamic> params, Interceptor inter}) async{
+  Future<T> request<T>(String url, {data, String method = "get", Map<String, dynamic> params, Interceptor inter}) async{
     print('url=$url');
 
     // 创建单独配置
@@ -19,17 +19,21 @@ class HttpRequest {
       // 请求拦截
       onRequest: (options) {
         print('请求拦截');
-      return options;
+        print(options.baseUrl);
+        print(options.path);
+        print('数据是${options.data}');
+        return options;
       },
       // 响应拦截
       onResponse: (response) {
         print('响应拦截');
-      return response;
+        return response;
       },
       // 错误拦截
       onError: (error) {
         print('错误拦截');
-      return error;
+        print(error.response.data);
+        return error;
       }
     );
 
@@ -45,9 +49,10 @@ class HttpRequest {
 
     // 发送网络请求
     try {
-      Response response = await dio.request(url, queryParameters: params, options: options);
+      Response response = await dio.request(url, queryParameters: params, options: options, data: data);
       return response.data;
     } on DioError catch(e) {
+      print("这里错误了");
       return Future.error(e);
     }
   }
