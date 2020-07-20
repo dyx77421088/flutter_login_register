@@ -6,6 +6,7 @@ import 'package:loginregister/utils/toast.dart';
 
 
 class Register extends StatefulWidget{
+  static final route = "/register";
   @override
   _RegisterState createState() => _RegisterState();
 }

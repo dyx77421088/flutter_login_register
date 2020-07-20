@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:loginregister/pages/login/login_info.dart';
+import 'package:loginregister/pages/login/qq_login.dart';
 import 'package:loginregister/service/http_request.dart';
 import 'package:loginregister/utils/toast.dart';
 
 class LoginPage extends StatefulWidget {
+  static final route = "/login";
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -120,19 +122,19 @@ class _LoginPageState extends State<LoginPage> {
             child: CircleAvatar(
               backgroundImage: AssetImage("images/qq.jpg"),
             ),
-            onTap: () => Navigator.pushNamed(context, "/qq_login"),
+            onTap: () => Navigator.pushNamed(context, QQLoginPage.route),
           ),
           InkWell(
             child: CircleAvatar(
               backgroundImage: AssetImage("images/wx.jpg"),
             ),
-            onTap: () => Navigator.pushNamed(context, "/qq_login"),
+            onTap: () => Navigator.pushNamed(context, QQLoginPage.route),
           ),
           InkWell(
             child: CircleAvatar(
               backgroundImage: AssetImage("images/wb.jpg"),
             ),
-            onTap: () => Navigator.pushNamed(context, "/qq_login"),
+            onTap: () => Navigator.pushNamed(context, QQLoginPage.route),
           )
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:flutter_qq/flutter_qq.dart';
 
 
 class QQLoginPage extends StatefulWidget {
+  static final route = "/qq_login";
   @override
   _QQLoginPageState createState() => _QQLoginPageState();
 }

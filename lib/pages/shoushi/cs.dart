@@ -3,7 +3,7 @@ import 'package:loginregister/pages/shoushi/setting_page.dart';
 import 'package:loginregister/pages/shoushi/verify_page.dart';
 
 class MainPage extends StatelessWidget {
-
+  static final route = "/cs";
   void _routeToPage(BuildContext context,Widget page) {
     Navigator.of(context).push(
         MaterialPageRoute(builder: (context){

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loginregister/my_ui/my_text_form_field.dart';
+import 'package:loginregister/pages/register/register.dart';
 
 typedef OnLoginCallback(String userName, String password);
 
@@ -59,7 +60,7 @@ class _LoginInfoPageState extends State<LoginInfoPage> {
                 ),
                 InkWell(
                   child: Text('现在注册'),
-                  onTap: () => Navigator.pushNamed(context, "/register"),
+                  onTap: () => Navigator.pushNamed(context, Register.route),
                 )
               ],
             )
